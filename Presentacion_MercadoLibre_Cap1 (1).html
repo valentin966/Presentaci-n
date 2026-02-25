@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis Estratégico — Mercado Libre</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Anybody:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="https://mercadolibre.com/favicon.ico">
+<style>
+:root {
+  --meli-yellow: #FFE600;
+  --meli-dark: #2D3277;
+  --meli-blue: #3483FA;
+  --meli-navy: #1A1B4B;
+  --meli-bg: #EBEBEB;
+  --meli-white: #FFFFFF;
+  --meli-black: #111111;
+  --meli-green: #00A650;
+  --meli-light-blue: #4886FF;
+  --font-display: 'Anybody', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);background:var(--meli-bg);color:var(--meli-black);overflow-x:hidden}
+
+/* ══════════ NAVIGATION ══════════ */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;background:var(--meli-yellow);box-shadow:0 2px 20px rgba(0,0,0,.12);transition:transform .3s}
+nav.hidden{transform:translateY(-100%)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;padding:0 2rem;height:56px;gap:1.5rem}
+.nav-logo{height:32px;width:32px;flex-shrink:0;border-radius:50%;object-fit:cover}
+.nav-brand{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
+.nav-brand-text{font-family:var(--font-heading);font-weight:700;font-size:.9rem;color:var(--meli-navy);letter-spacing:-.02em}
+.title-logo{filter:none !important}
+.nav-links{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{font-family:var(--font-heading);font-size:.72rem;font-weight:600;color:var(--meli-navy);text-decoration:none;padding:.45rem .7rem;border-radius:6px;white-space:nowrap;transition:background .2s,color .2s;letter-spacing:-.01em}
+.nav-links a:hover,.nav-links a.active{background:var(--meli-navy);color:var(--meli-yellow)}
+.nav-team{margin-left:auto;font-size:.7rem;color:var(--meli-dark);font-weight:500;white-space:nowrap;display:flex;align-items:center;gap:.4rem}
+.nav-team span{background:var(--meli-navy);color:var(--meli-yellow);padding:2px 8px;border-radius:4px;font-size:.65rem;font-weight:700}
+
+/* ══════════ SLIDE BASE ══════════ */
+.slide{min-height:100vh;padding:80px 2rem 3rem;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.slide-content{max-width:1100px;width:100%;position:relative;z-index:2}
+
+/* ══════════ TITLE SLIDE ══════════ */
+#portada{background:var(--meli-navy);color:var(--meli-white);text-align:center}
+#portada::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(52,131,250,.25),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(255,230,0,.1),transparent 50%);pointer-events:none}
+.title-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,230,0,.12);border:1px solid rgba(255,230,0,.3);padding:.4rem 1rem;border-radius:100px;font-size:.75rem;font-weight:600;color:var(--meli-yellow);margin-bottom:1.5rem;letter-spacing:.04em;text-transform:uppercase}
+.title-logo{height:52px;margin-bottom:1.5rem;filter:brightness(0) invert(1)}
+.title-main{font-family:var(--font-display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:.8rem}
+.title-main em{font-style:normal;color:var(--meli-yellow)}
+.title-sub{font-size:1.15rem;color:rgba(255,255,255,.65);max-width:600px;margin:0 auto 2rem;line-height:1.5}
+.title-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem 2rem;font-size:.8rem;color:rgba(255,255,255,.45)}
+.title-meta strong{color:rgba(255,255,255,.7)}
+.title-ticker{display:inline-block;background:var(--meli-yellow);color:var(--meli-navy);padding:.3rem .8rem;border-radius:6px;font-family:var(--font-heading);font-weight:700;font-size:.8rem;margin-top:1.5rem}
+
+/* ══════════ SECTION HEADERS ══════════ */
+.section-tag{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--meli-blue);margin-bottom:.6rem}
+.section-tag .num{background:var(--meli-blue);color:white;padding:2px 8px;border-radius:4px;font-size:.65rem}
+.section-title{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--meli-navy);margin-bottom:1.5rem}
+
+/* ══════════ CONTENT CARDS ══════════ */
+.card{background:var(--meli-white);border-radius:16px;padding:1.8rem;box-shadow:0 1px 3px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.06)}
+.card p,.card li{font-size:.92rem;line-height:1.65;color:#444}
+.card h4{font-family:var(--font-heading);font-weight:700;color:var(--meli-navy);font-size:1rem;margin-bottom:.5rem}
+
+/* ══════════ GRID LAYOUTS ══════════ */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.2rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+
+/* ══════════ TIMELINE ══════════ */
+.timeline{position:relative;padding-left:2.5rem}
+.timeline::before{content:'';position:absolute;left:.85rem;top:0;bottom:0;width:2px;background:linear-gradient(var(--meli-yellow),var(--meli-blue))}
+.timeline-item{position:relative;margin-bottom:1.2rem;padding-left:1.5rem}
+.timeline-item::before{content:'';position:absolute;left:-1.75rem;top:.45rem;width:14px;height:14px;border-radius:50%;background:var(--meli-yellow);border:3px solid var(--meli-navy);z-index:1}
+.timeline-year{font-family:var(--font-heading);font-weight:700;color:var(--meli-blue);font-size:.85rem}
+.timeline-text{font-size:.88rem;color:#555;line-height:1.5}
+
+/* ══════════ STAT CALLOUTS ══════════ */
+.stat-card{text-align:center;padding:1.5rem 1rem}
+.stat-card .num{font-family:var(--font-display);font-size:clamp(2rem,4vw,2.8rem);font-weight:900;color:var(--meli-navy);line-height:1}
+.stat-card .label{font-size:.78rem;color:#777;margin-top:.3rem;line-height:1.3}
+.stat-card.accent{background:var(--meli-yellow);border-color:var(--meli-yellow)}
+.stat-card.accent .num{color:var(--meli-navy)}
+.stat-card.dark{background:var(--meli-navy);border-color:var(--meli-navy)}
+.stat-card.dark .num,.stat-card.dark .label{color:var(--meli-white)}
+.stat-card.dark .label{opacity:.7}
+
+/* ══════════ ICON BADGES ══════════ */
+.icon-badge{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.6rem;flex-shrink:0}
+.icon-badge.yellow{background:var(--meli-yellow);color:var(--meli-navy)}
+.icon-badge.blue{background:var(--meli-blue);color:white}
+.icon-badge.green{background:var(--meli-green);color:white}
+.icon-badge.navy{background:var(--meli-navy);color:var(--meli-yellow)}
+
+/* ══════════ ECOSYSTEM DIAGRAM ══════════ */
+.eco-hub{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.eco-center{background:var(--meli-navy);color:var(--meli-yellow);padding:1.2rem 2.5rem;border-radius:16px;font-family:var(--font-display);font-weight:800;font-size:1.3rem;text-align:center;box-shadow:0 8px 30px rgba(26,27,75,.3)}
+.eco-ring{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem}
+.eco-node{background:white;border:2px solid var(--meli-blue);border-radius:12px;padding:.8rem 1.2rem;font-family:var(--font-heading);font-weight:600;font-size:.82rem;color:var(--meli-navy);text-align:center;min-width:130px;transition:transform .2s,box-shadow .2s}
+.eco-node:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(52,131,250,.2)}
+.eco-node small{display:block;font-weight:400;font-size:.7rem;color:#888;margin-top:.2rem}
+
+/* ══════════ DARK SECTIONS ══════════ */
+.slide-dark{background:var(--meli-navy);color:var(--meli-white)}
+.slide-dark .section-tag{color:var(--meli-yellow)}
+.slide-dark .section-tag .num{background:var(--meli-yellow);color:var(--meli-navy)}
+.slide-dark .section-title{color:var(--meli-white)}
+.slide-dark .card{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.1)}
+.slide-dark .card p,.slide-dark .card li,.slide-dark .card h4{color:rgba(255,255,255,.85)}
+.slide-dark .card h4{color:var(--meli-yellow)}
+
+/* ══════════ YELLOW SECTIONS ══════════ */
+.slide-yellow{background:var(--meli-yellow)}
+.slide-yellow .section-tag{color:var(--meli-navy)}
+.slide-yellow .section-tag .num{background:var(--meli-navy);color:var(--meli-yellow)}
+.slide-yellow .section-title{color:var(--meli-navy)}
+
+/* ══════════ PILL TAGS ══════════ */
+.pill{display:inline-block;padding:.25rem .65rem;border-radius:100px;font-size:.72rem;font-weight:600;font-family:var(--font-heading)}
+.pill-blue{background:rgba(52,131,250,.12);color:var(--meli-blue)}
+.pill-yellow{background:rgba(255,230,0,.3);color:var(--meli-navy)}
+.pill-green{background:rgba(0,166,80,.12);color:var(--meli-green)}
+
+/* ══════════ ORG CHART ══════════ */
+.org-level{margin-bottom:1.2rem}
+.org-level-title{font-family:var(--font-heading);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--meli-blue);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.org-level-title::before{content:'';width:16px;height:3px;background:var(--meli-blue);border-radius:2px}
+.org-people{display:flex;flex-wrap:wrap;gap:.5rem}
+.org-person{background:white;border:1px solid rgba(0,0,0,.08);padding:.45rem .8rem;border-radius:8px;font-size:.8rem}
+.org-person strong{color:var(--meli-navy)}
+.org-person span{color:#888;font-size:.72rem}
+
+/* ══════════ SECTOR CARDS ══════════ */
+.sector-card{position:relative;overflow:hidden}
+.sector-card .sector-icon{font-size:2rem;margin-bottom:.5rem}
+.sector-bar{position:absolute;top:0;left:0;width:4px;height:100%;border-radius:0 4px 4px 0}
+
+/* ══════════ RESPONSIVE ══════════ */
+@media(max-width:768px){
+  .slide{padding:70px 1rem 2rem}
+  .nav-team{display:none}
+  .nav-links a{font-size:.65rem;padding:.35rem .5rem}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+}
+
+/* ══════════ ANIMATIONS ══════════ */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.stagger-1{transition-delay:.1s}
+.stagger-2{transition-delay:.2s}
+.stagger-3{transition-delay:.3s}
+.stagger-4{transition-delay:.4s}
+
+/* ══════════ FOOTER ══════════ */
+footer{background:var(--meli-navy);color:rgba(255,255,255,.4);text-align:center;padding:2rem;font-size:.75rem}
+footer strong{color:var(--meli-yellow)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVIGATION ═══════════════ -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <div class="nav-brand"><img src="data:image/jpeg;base64,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" alt="Mercado Libre" class="nav-logo"><span class="nav-brand-text">Mercado Libre</span></div>
+    <div class="nav-links">
+      <a href="#portada">Inicio</a>
+      <a href="#historia">1.1 Historia</a>
+      <a href="#mision">1.2 Misión</a>
+      <a href="#tipo">1.3 Tipo</a>
+      <a href="#edad">1.3.1 Edad</a>
+      <a href="#tamano">1.3.2 Tamaño</a>
+      <a href="#juridica">1.3.3 Jurídica</a>
+      <a href="#organizacional">1.3.4 Org.</a>
+      <a href="#sector">1.3.5 Sector</a>
+      <a href="#producto">1.4 Producto</a>
+    </div>
+    <div class="nav-team">ESCA ST <span>4GM1</span></div>
+  </div>
+</nav>
+
+<!-- ═══════════════ PORTADA ═══════════════ -->
+<section class="slide" id="portada">
+  <div class="slide-content">
+    <div class="title-badge">📊 Dirección Estratégica de Organizaciones · 2026-2</div>
+    <img src="data:image/jpeg;base64,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" alt="Mercado Libre" style="height:72px;margin-bottom:1.5rem;border-radius:50%">
+    <h1 class="title-main">Análisis <em>Estratégico</em></h1>
+    <p class="title-sub">Capítulo I · Identidad de la Empresa — La tech más valiosa de América Latina analizada por dentro</p>
+    <div class="title-meta">
+      <span><strong>Profa.</strong> Xochitl Díaz Rosas</span>
+      <span><strong>Equipo:</strong> Blas · Camargo · Escamilla · Lozada</span>
+      <span><strong>Grupo:</strong> 4GM1</span>
+    </div>
+    <div class="title-ticker">NASDAQ: MELI · ~$107B USD</div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.1 HISTORIA ═══════════════ -->
+<section class="slide" id="historia" style="background:#F8F8FA">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.1</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Historia y Filosofía Empresarial</h2>
+
+    <div class="grid-2" style="margin-bottom:1.5rem">
+      <div class="card fade-up">
+        <h4>🏠 Los orígenes (1999)</h4>
+        <p>Todo comenzó cuando Marcos Galperin, tras concluir su MBA en Stanford, reunió un equipo de emprendedores con la visión de que la tecnología podría transformar el comercio en América Latina. La empresa dio sus primeros pasos en un garaje del barrio de Saavedra, Buenos Aires. La palabra clave desde el día uno: <strong>democratizar</strong>.</p>
+      </div>
+      <div class="card fade-up stagger-1">
+        <h4>💡 Filosofía: ADN Emprendedor</h4>
+        <p>La cultura interna se describe como desafiante, alegre y divertida. Fomenta la toma de riesgos, la innovación constante y la excelencia. La mentalidad de "beta continuo" significa que todo siempre puede mejorar. Incluso como multinacional, conserva el espíritu de startup.</p>
+      </div>
+    </div>
+
+    <div class="card fade-up stagger-2" style="margin-bottom:1.5rem">
+      <h4>📅 Línea del Tiempo</h4>
+      <div class="timeline" style="margin-top:1rem">
+        <div class="timeline-item"><span class="timeline-year">1999</span><span class="timeline-text"> — Fundación en un garaje de Saavedra, Buenos Aires. Marcos Galperin + equipo fundador</span></div>
+        <div class="timeline-item"><span class="timeline-year">2001</span><span class="timeline-text"> — eBay invierte (19.5%, $46.5M). Validación de la filosofía de democratización</span></div>
+        <div class="timeline-item"><span class="timeline-year">2003</span><span class="timeline-text"> — Nace Mercado Pago: el miedo a los pagos digitales era un problema ético, no técnico</span></div>
+        <div class="timeline-item"><span class="timeline-year">2007</span><span class="timeline-text"> — IPO en NASDAQ (símbolo MELI). 1ª tech latinoamericana en cotizar ahí</span></div>
+        <div class="timeline-item"><span class="timeline-year">2013</span><span class="timeline-text"> — Mercado Envíos: logística propia. Fondo de inversión corporativo</span></div>
+        <div class="timeline-item"><span class="timeline-year">2017</span><span class="timeline-text"> — Mercado Crédito: inclusión financiera real para PyMEs</span></div>
+        <div class="timeline-item"><span class="timeline-year">2020</span><span class="timeline-text"> — Boom pandémico: ventas +76%. Adopción digital masiva</span></div>
+        <div class="timeline-item"><span class="timeline-year">2024</span><span class="timeline-text"> — Plataforma Verdi con GPT-4o. ML Negocios (B2B). $200B procesados por MP</span></div>
+        <div class="timeline-item"><span class="timeline-year">2026</span><span class="timeline-text"> — Nuevo CEO Ariel Szarfsztejn. Galperin pasa a Chairman. $3,400M inversión México</span></div>
+      </div>
+    </div>
+
+    <div class="grid-4 fade-up stagger-3">
+      <div class="card stat-card accent"><div class="num">1.8M</div><div class="label">Familias con ingreso principal vía MELI</div></div>
+      <div class="card stat-card"><div class="num">574K</div><div class="label">PyMEs activas en la plataforma</div></div>
+      <div class="card stat-card dark"><div class="num">18</div><div class="label">Países donde opera</div></div>
+      <div class="card stat-card"><div class="num">~$200B</div><div class="label">USD procesados por MP en 2024</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.2 MISIÓN ═══════════════ -->
+<section class="slide slide-dark" id="mision">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.2</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Misión, Visión y Objetivos Estratégicos</h2>
+
+    <div class="grid-2" style="margin-bottom:1.5rem">
+      <div class="card fade-up" style="border-left:4px solid var(--meli-yellow)">
+        <h4>🎯 Misión</h4>
+        <p style="font-size:1.05rem;font-weight:500;color:var(--meli-yellow);line-height:1.5">"Democratizar el comercio y los servicios financieros para transformar la vida de millones de personas en América Latina."</p>
+      </div>
+      <div class="card fade-up stagger-1" style="border-left:4px solid var(--meli-blue)">
+        <h4>🔭 Visión</h4>
+        <p>Liderar el paso del comercio presencial al digital en toda la región, mejorando continuamente su propuesta de valor. No es consolidación, sino expansión permanente.</p>
+      </div>
+    </div>
+
+    <h4 style="color:var(--meli-yellow);font-family:var(--font-heading);margin-bottom:1rem;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em" class="fade-up stagger-2">5 Objetivos Estratégicos</h4>
+    <div class="grid-3 fade-up stagger-2">
+      <div class="card">
+        <div class="icon-badge yellow">🛒</div>
+        <h4>Experiencia del Usuario</h4>
+        <p>ADN de "beta continuo": mejores precios, mayor variedad, entregas rápidas y transacciones seguras.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge blue">💳</div>
+        <h4>Inclusión Financiera</h4>
+        <p>En MX &lt;50% bancarizados. MP como ventanilla única. 22M de negocios creditados en Brasil (2024), la mitad primera vez.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge green">📦</div>
+        <h4>Fortalecimiento Logístico</h4>
+        <p>80% de paquetes entregados en &lt;48h con red logística propia. Inversión intensiva en tecnología.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge yellow">📢</div>
+        <h4>Publicidad Digital</h4>
+        <p>Retail media LatAm proyecta $5B para 2028. MELI posicionado como plataforma líder con datos 1st party.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge navy">🌱</div>
+        <h4>Ecosistema Emprendedor</h4>
+        <p>Fondo de inversión corporativo (desde 2013) en startups de IA, blockchain, antifraude y finanzas digitales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.3 TIPO ═══════════════ -->
+<section class="slide slide-yellow" id="tipo">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.3</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Tipo y Características</h2>
+
+    <div class="grid-2" style="margin-bottom:1.5rem">
+      <div class="card fade-up">
+        <h4>🏢 Identidad Corporativa</h4>
+        <p>Multinacional de origen argentino, constituida en Delaware (15 oct 1999). Primera tech LatAm en NASDAQ. Modelo diversificado e integrado: e-commerce + logística + fintech + publicidad + créditos + seguros.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem">
+          <span class="pill pill-blue">B2B</span>
+          <span class="pill pill-blue">B2C</span>
+          <span class="pill pill-blue">C2C</span>
+          <span class="pill pill-green">18 países</span>
+          <span class="pill pill-yellow">NASDAQ: MELI</span>
+        </div>
+      </div>
+      <div class="fade-up stagger-1">
+        <div class="grid-2" style="gap:.8rem">
+          <div class="card stat-card"><div class="num">115M</div><div class="label">Compradores únicos/año</div></div>
+          <div class="card stat-card dark"><div class="num">2.2B</div><div class="label">Artículos vendidos/año</div></div>
+          <div class="card stat-card accent" style="grid-column:1/-1"><div class="num" style="font-size:2rem">80%</div><div class="label">Entregados en menos de 48 horas</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-up stagger-2">
+      <h4>🧬 Características Definitorias</h4>
+      <div class="grid-4" style="margin-top:.8rem;gap:.6rem">
+        <div style="text-align:center;padding:.8rem"><div style="font-size:1.5rem">🔄</div><p style="font-size:.8rem;color:#555;margin-top:.3rem"><strong>Ecosistémico:</strong> cada vertical refuerza a las demás y genera lock-in</p></div>
+        <div style="text-align:center;padding:.8rem"><div style="font-size:1.5rem">⚡</div><p style="font-size:.8rem;color:#555;margin-top:.3rem"><strong>Tech/Innovador:</strong> 17K devs, 30K+ microservicios, Verdi IA (GPT-4o)</p></div>
+        <div style="text-align:center;padding:.8rem"><div style="font-size:1.5rem">🌎</div><p style="font-size:.8rem;color:#555;margin-top:.3rem"><strong>Escala Regional:</strong> 18 países, único actor con capilaridad e-commerce + fintech</p></div>
+        <div style="text-align:center;padding:.8rem"><div style="font-size:1.5rem">🚀</div><p style="font-size:.8rem;color:#555;margin-top:.3rem"><strong>Cultura Startup:</strong> "corazón de startup" con 84K+ empleados</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.3.1 EDAD ═══════════════ -->
+<section class="slide" id="edad" style="background:#F4F5F9">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.3.1</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Edad de la Empresa</h2>
+
+    <div class="grid-2" style="margin-bottom:1.5rem">
+      <div class="card fade-up" style="border-left:4px solid var(--meli-yellow)">
+        <h4>📋 Datos Cronológicos</h4>
+        <p><strong>Constitución legal:</strong> 15 de octubre de 1999 (Delaware, EE.UU.)<br>
+        <strong>Inicio de operaciones:</strong> agosto de 1999 (Buenos Aires)<br>
+        <strong>Antigüedad:</strong> ~27 años de operación continua<br>
+        <strong>Generación dot-com:</strong> contemporánea de Google (1998), Alibaba (1999), PayPal (1998)</p>
+      </div>
+      <div class="card fade-up stagger-1">
+        <h4>🛡️ Resiliencia Comprobada</h4>
+        <p>Sobrevivió la burbuja dot-com gracias a la inversión de eBay ($46.5M, 2001). La mayoría de competidores como DeRemate e iBazar desaparecieron. MELI lleva 27 trimestres consecutivos con crecimiento &gt;30% YoY.</p>
+      </div>
+    </div>
+
+    <div class="card fade-up stagger-2" style="margin-bottom:1.5rem">
+      <h4>📊 Etapas de Madurez</h4>
+      <div class="grid-4" style="margin-top:.8rem;gap:.8rem">
+        <div style="background:var(--meli-yellow);padding:1rem;border-radius:12px;text-align:center">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;color:var(--meli-navy)">1999–2006</div>
+          <div style="font-weight:700;color:var(--meli-navy);font-size:.85rem;margin:.3rem 0">Startup</div>
+          <div style="font-size:.72rem;color:var(--meli-dark)">Marketplace, subastas, alianza eBay, MercadoPago</div>
+        </div>
+        <div style="background:var(--meli-blue);padding:1rem;border-radius:12px;text-align:center;color:white">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:.75rem">2007–2014</div>
+          <div style="font-weight:700;font-size:.85rem;margin:.3rem 0">Consolidación</div>
+          <div style="font-size:.72rem;opacity:.8">IPO, gobierno corporativo, Ads, Shops, Envíos</div>
+        </div>
+        <div style="background:var(--meli-navy);padding:1rem;border-radius:12px;text-align:center;color:white">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;color:var(--meli-yellow)">2015–2020</div>
+          <div style="font-weight:700;font-size:.85rem;margin:.3rem 0">Integración</div>
+          <div style="font-size:.72rem;opacity:.7">Crédito 2017, network effects, boom pandémico +76%</div>
+        </div>
+        <div style="background:var(--meli-green);padding:1rem;border-radius:12px;text-align:center;color:white">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:.75rem">2020–Hoy</div>
+          <div style="font-weight:700;font-size:.85rem;margin:.3rem 0">Madurez Expansiva</div>
+          <div style="font-size:.72rem;opacity:.8">IA, transición CEO, inversión récord México</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-up stagger-3">
+      <h4>🧠 Paradoja de Madurez</h4>
+      <p>27 años de experiencia pero el mercado aún está por desarrollarse: la penetración del e-commerce en LatAm representa un dígito del retail total (vs ~22% en EE.UU.). MELI es una empresa madura en un mercado joven. Eso no es señal de agotamiento, sino posición privilegiada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.3.2 TAMAÑO ═══════════════ -->
+<section class="slide slide-dark" id="tamano">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.3.2</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Tamaño y Ubicación Física y Virtual</h2>
+
+    <div class="grid-4 fade-up" style="margin-bottom:1.5rem">
+      <div class="card stat-card accent"><div class="num">84K+</div><div class="label">Empleados globales</div></div>
+      <div class="card stat-card" style="background:var(--meli-blue);border-color:var(--meli-blue)"><div class="num" style="color:white">115M</div><div class="label" style="color:rgba(255,255,255,.7)">Compradores únicos/año</div></div>
+      <div class="card stat-card" style="background:white"><div class="num">2.2B</div><div class="label">Artículos entregados/año</div></div>
+      <div class="card stat-card accent"><div class="num">72M</div><div class="label">Usuarios fintech MAU</div></div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:1.5rem">
+      <div class="card fade-up stagger-1">
+        <h4>🏛️ Presencia Física</h4>
+        <p><strong>Sede legal:</strong> Delaware, EE.UU.<br>
+        <strong>Oficinas ejecutivas:</strong> Arias 3751, piso 7, Buenos Aires<br>
+        <strong>Oficinas regionales:</strong> 23 (São Paulo, CDMX, Bogotá, Santiago, Montevideo, Caracas)<br>
+        <strong>Concepto:</strong> "Campus de experiencia" — modelo híbrido, Work from Anywhere 90 días/año</p>
+      </div>
+      <div class="card fade-up stagger-2">
+        <h4>🇲🇽 México: Prioridad Estratégica</h4>
+        <p><strong>Inversión 2020-2025:</strong> $10,495M USD<br>
+        <strong>Empleados:</strong> 25K → 35,400 (2025)<br>
+        <strong>Logística:</strong> 14 CEDIS, 90+ crossdocking, 3,000 agencias, 4 aviones, 900+ vans eléctricas<br>
+        <strong>Same-day:</strong> 25 ciudades<br>
+        <strong>Impacto:</strong> 414K familias dependen del ecosistema</p>
+      </div>
+    </div>
+
+    <div class="card fade-up stagger-3">
+      <h4>💻 Presencia Virtual</h4>
+      <p>Líder en visitantes únicos y páginas vistas en cada país donde opera. Plataformas: marketplace, Mercado Pago (app + web), Mercado Shops, Mercado Ads, Mercado Play (streaming gratuito). Lo físico y lo virtual se refuerzan mutuamente: la infraestructura logística hace posible la promesa digital, y la plataforma genera la demanda que justifica la inversión.</p>
+      <p style="margin-top:.6rem;font-size:.82rem;color:var(--meli-yellow);font-weight:600">⚠️ Brecha rural: same-day solo en 25 ciudades. Sureste (Chiapas, Oaxaca, Guerrero) con menor cobertura — reto pendiente.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.3.3 JURÍDICA ═══════════════ -->
+<section class="slide" id="juridica" style="background:#F8F8FA">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.3.3</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Estructura Jurídica</h2>
+
+    <div class="grid-3 fade-up">
+      <div class="card" style="border-top:4px solid var(--meli-navy)">
+        <h4>⚖️ Constitución</h4>
+        <p>Corporación bajo leyes de Delaware, EE.UU. Base legal sólida y reconocida a nivel internacional. Combina estabilidad jurídica con operación en LatAm.</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--meli-blue)">
+        <h4>📈 Capital Abierto</h4>
+        <p>Cotiza en NASDAQ Global Select Market. Reportes ante SEC (10-K, 10-Q, 8-K). Gobierno corporativo estricto. Grado de inversión S&P y Fitch.</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--meli-yellow)">
+        <h4>🌐 Subsidiarias</h4>
+        <p>Filiales en cada país de operación. Entidades legales independientes que cumplen regulación local. Mercado Pago supervisado por bancos centrales. Coordinación central desde la matriz.</p>
+      </div>
+    </div>
+
+    <div class="card fade-up stagger-1" style="margin-top:1.5rem">
+      <h4>💰 Estructura Financiera</h4>
+      <p>Emite instrumentos como bonos internacionales (Sustainability Notes 2.375% a 2026, Notes 3.125% a 2031) respaldados por subsidiarias. La transparencia no es un extra: es pieza central del modelo legal y financiero. Acceso a financiamiento internacional, credibilidad institucional y rendición de cuentas como pilares.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.3.4 ORGANIZACIONAL ═══════════════ -->
+<section class="slide slide-yellow" id="organizacional">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.3.4</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Estructura Organizacional</h2>
+
+    <div class="card fade-up" style="margin-bottom:1.5rem">
+      <h4>🏗️ 3 Niveles de Organización</h4>
+      <div style="margin-top:1rem">
+        <div class="org-level">
+          <div class="org-level-title">Nivel 1 — Consejo de Administración</div>
+          <div class="org-people">
+            <div class="org-person"><strong>Marcos Galperin</strong> <span>· Chairman (desde ene 2026)</span></div>
+            <div class="org-person">Directores independientes internacionales</div>
+          </div>
+          <p style="font-size:.82rem;color:#666;margin-top:.4rem">Máxima autoridad de gobierno corporativo. Vigila transparencia y cuida intereses de accionistas.</p>
+        </div>
+        <div class="org-level">
+          <div class="org-level-title">Nivel 2 — Dirección Ejecutiva</div>
+          <div class="org-people">
+            <div class="org-person"><strong>Ariel Szarfsztejn</strong> <span>· CEO</span></div>
+            <div class="org-person"><strong>Martín de los Santos</strong> <span>· CFO</span></div>
+            <div class="org-person"><strong>Daniel Rabinovich</strong> <span>· COO</span></div>
+            <div class="org-person"><strong>Osvaldo Giménez</strong> <span>· Pdte. Fintech</span></div>
+            <div class="org-person"><strong>Sean Summers</strong> <span>· CMO</span></div>
+          </div>
+          <p style="font-size:.82rem;color:#666;margin-top:.4rem">Convierte la estrategia en acciones concretas. Muchos llevan +10 años en la empresa.</p>
+        </div>
+        <div class="org-level">
+          <div class="org-level-title">Nivel 3 — Unidades Operativas</div>
+          <div class="org-people">
+            <div class="org-person">Commerce</div>
+            <div class="org-person">Pago</div>
+            <div class="org-person">Envíos</div>
+            <div class="org-person">Ads</div>
+            <div class="org-person">Crédito</div>
+            <div class="org-person">Shops</div>
+          </div>
+          <p style="font-size:.82rem;color:#666;margin-top:.4rem">Autonomía funcional + equipos locales por país. Cultura: innovación constante, prueba y error, colaboración transversal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.3.5 SECTOR ═══════════════ -->
+<section class="slide slide-dark" id="sector">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.3.5</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Sector Empresarial</h2>
+    <p class="fade-up stagger-1" style="color:rgba(255,255,255,.6);margin-bottom:1.5rem;max-width:700px">Clasificada como "Tecnología" en NASDAQ, pero su actividad real atraviesa 4 industrias simultáneamente. Esa intersectorialidad <em>es</em> su ventaja competitiva.</p>
+
+    <div class="grid-2 fade-up stagger-2">
+      <div class="card sector-card" style="position:relative">
+        <div class="sector-bar" style="background:var(--meli-yellow)"></div>
+        <div style="padding-left:.8rem">
+          <div style="font-size:1.5rem;margin-bottom:.4rem">🛒</div>
+          <h4>E-Commerce</h4>
+          <p>Líder LatAm por GMV. 9ª plataforma mundial por visitantes. 18 países. 115M compradores. Compite con Amazon, Alibaba, Shopee — con especialización geográfica regional.</p>
+        </div>
+      </div>
+      <div class="card sector-card" style="position:relative">
+        <div class="sector-bar" style="background:var(--meli-blue)"></div>
+        <div style="padding-left:.8rem">
+          <div style="font-size:1.5rem;margin-bottom:.4rem">💳</div>
+          <h4>Fintech</h4>
+          <p>Mercado Pago: principal fintech LatAm por TPV. 8 países. Pagos QR, cuentas, tarjetas, créditos, seguros, inversiones. Compite con bancos tradicionales, PayPal, Stripe y neobancos.</p>
+        </div>
+      </div>
+      <div class="card sector-card" style="position:relative">
+        <div class="sector-bar" style="background:var(--meli-green)"></div>
+        <div style="padding-left:.8rem">
+          <div style="font-size:1.5rem;margin-bottom:.4rem">📢</div>
+          <h4>Publicidad Digital</h4>
+          <p>Soluciones con datos 1st party que ningún competidor iguala. Retail media LatAm proyecta $5B para 2028. MELI posicionado como plataforma líder.</p>
+        </div>
+      </div>
+      <div class="card sector-card" style="position:relative">
+        <div class="sector-bar" style="background:var(--meli-yellow)"></div>
+        <div style="padding-left:.8rem">
+          <div style="font-size:1.5rem;margin-bottom:.4rem">📦</div>
+          <h4>Logística</h4>
+          <p>Mercado Envíos: 2.2B entregas/año. Red propia continental. Compite con DHL, FedEx y correos nacionales. 80% en &lt;48h.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:1.5rem" class="fade-up stagger-3">
+      <div style="display:inline-block;background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.3);padding:.8rem 1.5rem;border-radius:12px;font-size:.88rem;color:var(--meli-yellow);font-weight:500">Ningún otro actor en América Latina ofrece soluciones integrales en los 4 frentes simultáneamente</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1.4 PRODUCTO ═══════════════ -->
+<section class="slide" id="producto" style="background:#F8F8FA">
+  <div class="slide-content">
+    <div class="section-tag fade-up"><span class="num">1.4</span> CAPÍTULO I</div>
+    <h2 class="section-title fade-up">Descripción del Producto y Servicio</h2>
+    <p class="fade-up stagger-1" style="color:#666;margin-bottom:1.5rem;max-width:750px">Un ecosistema integrado donde cada solución resuelve una necesidad distinta dentro del mismo proceso económico. Cada unidad potencia a las demás.</p>
+
+    <div class="eco-hub fade-up stagger-2" style="margin-bottom:2rem">
+      <div class="eco-ring">
+        <div class="eco-node" style="border-color:var(--meli-yellow)">🛒 Marketplace<small>115M compradores · C2C/B2C/B2B</small></div>
+        <div class="eco-node" style="border-color:var(--meli-blue)">💳 Mercado Pago<small>72M MAU · Pagos, QR, tarjetas</small></div>
+        <div class="eco-node" style="border-color:var(--meli-green)">📦 Mercado Envíos<small>2.2B items · fulfillment · Meli Places</small></div>
+      </div>
+      <div class="eco-center">Ecosistema MELI</div>
+      <div class="eco-ring">
+        <div class="eco-node" style="border-color:#FF6B35">💰 Mercado Crédito<small>$6.6B cartera Q4 2024</small></div>
+        <div class="eco-node" style="border-color:#A855F7">📢 Mercado Ads<small>170K anunciantes · EBIT ~80%</small></div>
+        <div class="eco-node" style="border-color:#EC4899">🏪 Mercado Shops<small>Tiendas con dominio propio</small></div>
+      </div>
+    </div>
+
+    <div class="grid-2 fade-up stagger-3">
+      <div class="card">
+        <h4>💳 Mercado Pago — Detalle</h4>
+        <p>Cuenta digital gratuita, transferencias, pagos de servicios, tarjeta Mastercard internacional, dispositivos Point (Bluetooth, Plus, Smart), pagos QR, crédito al consumo y productivo, Mercado Fondo (inversión digital), seguros de vida/accidentes.</p>
+      </div>
+      <div class="card">
+        <h4>📦 Mercado Envíos — Detalle</h4>
+        <p>Entrega al día siguiente, Meli Delivery Day, Meli Places (puntos de retiro), fulfillment (inventario en CEDIS de MELI). En México: 14 CEDIS, 90+ sitios crossdocking, 3,000 agencias de paquetes, 4 aviones, 900+ vans eléctricas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <strong>Análisis Estratégico de la Empresa Mercado Libre</strong> · Capítulo I: Identidad de la Empresa<br>
+  Dirección Estratégica de Organizaciones · ESCA Santo Tomás · IPN · Grupo 4GM1 · Profa. Xochitl Díaz Rosas · 2026-2<br>
+  Blas Cortes, Valentín · Camargo Villamar, Cristian Joshua · Escamilla Villarreal, Rafael · Lozada García, Ian Francisco
+</footer>
+
+<script>
+// Scroll-based animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Active nav link
+const sections = document.querySelectorAll('.slide');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+
+// Hide nav on scroll down, show on scroll up
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  const st = window.scrollY;
+  if (st > lastScroll && st > 100) nav.classList.add('hidden');
+  else nav.classList.remove('hidden');
+  lastScroll = st;
+});
+</script>
+</body>
+</html>
